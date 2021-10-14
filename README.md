@@ -27,7 +27,7 @@ Make sure to source the correct setup file according to your workspace hierarchy
 Assuming your catkin workspace folder is ~/catkin_ws, you should use the following commands:
 ```sh
 $ cd ~/catkin_ws/src
-$ git clone https://github.com/AvansRobotics/FlexibleAssembly.git
+$ git clone https://github.com/AvansRobotics/flexibleassembly_ws.git
 $ cd ..
 $ catkin_make
 $ source devel/setup.bash

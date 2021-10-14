@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>flexible_assembly</name>
+  <name>flexible_assembly_bringup</name>
   <version>0.0.0</version>
-  <description>The flexible_assembly package</description>
+  <description>The flexible_assembly_bringup package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
