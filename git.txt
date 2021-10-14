@@ -1,3 +1,0 @@
-repo: https://github.com/AvansRobotics/FlexibleAssembly.git
-username: AvansRobotics
-password: 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
