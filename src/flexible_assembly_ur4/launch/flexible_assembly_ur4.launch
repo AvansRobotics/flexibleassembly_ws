@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<launch>
+    <node pkg="flexible_assembly_ur4" type="flexible_assembly_ur4" name="flexible_assembly_ur4" output="screen"/>
+</launch>
+
