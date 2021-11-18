@@ -106,22 +106,24 @@ find_package(catkin REQUIRED COMPONENTS
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES flexible_assembly_ur5
-#  CATKIN_DEPENDS moveit_ros_planning moveit_ros_planning_interface moveit_visual_tools roscpp std_msgs tf2_eigen
-#  DEPENDS system_lib
+ INCLUDE_DIRS include
+ LIBRARIES flexible_assembly_ur5
+ CATKIN_DEPENDS moveit_ros_planning moveit_ros_planning_interface moveit_visual_tools roscpp std_msgs tf2_eigen
+ DEPENDS system_lib
 )
 
 ###########
 ## Build ##
-###########
+#############
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
+  include
   ${catkin_INCLUDE_DIRS}
 )
+
+
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
@@ -161,10 +163,8 @@ target_link_libraries(${PROJECT_NAME}
 # See http://ros.org/doc/api/catkin/html/adv_user_guide/variables.html
 
 ## Mark executable scripts (Python etc.) for installation
-## in contrast to setup.py, you can choose the destination
-# catkin_install_python(PROGRAMS
-#   scripts/my_python_script
-#   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+## in contrast to setup.p
+#PACKAGE_BIN_DESTINATION}
 # )
 
 ## Mark executables for installation
@@ -181,12 +181,12 @@ target_link_libraries(${PROJECT_NAME}
 #   RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
 # )
 
-## Mark cpp header files for installation
-# install(DIRECTORY include/${PROJECT_NAME}/
-#   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
-#   FILES_MATCHING PATTERN "*.h"
-#   PATTERN ".svn" EXCLUDE
-# )
+# Mark cpp header files for installation
+install(DIRECTORY include/${PROJECT_NAME}/
+  DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+  FILES_MATCHING PATTERN "*.h"
+  PATTERN ".svn" EXCLUDE
+)
 
 ## Mark other files for installation (e.g. launch and bag files, etc.)
 # install(FILES

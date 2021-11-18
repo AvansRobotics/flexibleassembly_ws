@@ -5,13 +5,14 @@
         <arg name="kinematics_config" value="$(find ur_calibration)/ROS-UR-5_robot_calibration.yaml"/>
     </include>
 
-    <include file="$(find ur3_moveit_config)/launch/ur3_moveit_planning_execution.launch"> 
+    <include file="$(find ur3_with_vacuum_tool_moveit_config)/launch/moveit_planning_execution.launch">
+    <!-- <include file="$(find ur3_moveit_config)/launch/ur3_moveit_planning_execution.launch">  -->
         <!-- <arg name="robot_ip" value="192.168.66.2"/>
         <arg name="kinematics_config" value="$(find ur_calibration)/ROS-UR-5_robot_calibration.yaml"/> -->
     </include>
 
-
-    <include file="$(find ur3_moveit_config)/launch/moveit_rviz.launch"> 
+    <include file="$(find ur3_with_vacuum_tool_moveit_config)/launch/moveit_rviz.launch"> 
+    <!-- <include file="$(find ur3_moveit_config)/launch/moveit_rviz.launch">  -->
                 <arg name="rviz_config" value="$(find flexible_assembly_bringup)/config/flexible_assembly_UR5.rviz"/>
         <!--<arg name="kinematics_config" value="$(find ur_calibration)/ROS-UR-5_robot_calibration.yaml"/> -->
     </include>
