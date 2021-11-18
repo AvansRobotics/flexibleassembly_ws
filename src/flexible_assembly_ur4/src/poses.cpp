@@ -1,7 +1,8 @@
 #include "poses.h"
 
-  JointPose::JointPose(std::string name){
+  JointPose::JointPose(std::string name, std::vector<float>jointPoses){
     poseName = name;
+    joint_positions = jointPoses;
   }
 
   void JointPose::printinfo()
