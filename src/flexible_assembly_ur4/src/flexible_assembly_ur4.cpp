@@ -45,8 +45,6 @@
 
 #include <moveit_visual_tools/moveit_visual_tools.h>
 
-#include "poses.cpp"
-
 // The circle constant tau = 2*pi. One tau is one rotation in radians.
 const double tau = 2 * M_PI;
 
@@ -106,8 +104,7 @@ int main(int argc, char **argv)
   // Now, let's modify one of the joints, plan to the new joint space goal and visualize the plan.
   // joint_group_positions[0] = joint_group_positions[0] + 0.2; // -1/6 turn in radians
   std::vector<float> pose1={-1.4125,-1.8258,-1.4125,-1.5455,-1.5708,0.181165};
-  JointPose startpose("naam", pose1); 
-  startpose.printinfo();
+
 
   std::cout << "joint_group_positions after:" << std::endl;
   for (double i : joint_group_positions)

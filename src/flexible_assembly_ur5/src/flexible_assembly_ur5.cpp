@@ -53,25 +53,53 @@ const double tau = 2 * M_PI;
 
 std::vector<double> zeroPose = {0, 0, 0, 0, 0, 0};
 std::vector<double> homePose = {0, -1.57, 0, -1.57, 0, 0};
+std::vector<double> prePickPose = {-1, -1.57, 0, -1.57, 0, 0};
+
+
+
+double roundUp(double value, int decimal_places)
+{
+  const double multiplier = std::pow(10.0, decimal_places);
+  return std::ceil(value * multiplier) / multiplier;
+}
+
+void printJointPositions(std::vector<double> joint_positions)
+{
+    for(int i = 0; i < joint_positions.size(); i++)
+  {
+    std::cout << "current joint " << i << " position: " << roundUp(joint_positions[i], 4) << std::endl;
+  }
+}
 
 bool robotIsatPose(std::vector<double> current_joint_positions, std::vector<double> expected_joint_positions)
 {
-  for (int i : current_joint_positions)
+  int flag = 0;
+  for (int i = 0; i < current_joint_positions.size(); i++)
   {
-    if (!abs(current_joint_positions[i] - goal_positions[i]) < 0.005)
+    double current_joint_position_rounded = roundUp(current_joint_positions[i], 4);
+    double expected_joint_position_rounded = roundUp(expected_joint_positions[i], 4);
+
+    double deviation = abs(current_joint_position_rounded - expected_joint_position_rounded);
+    if (!(deviation < 0.05))
     {
-      std::cout << "Robot is not at the expected pose, please move the robot manually to the expected pose." << std::endl;
-      return false;
+      std::cout << "Joint " << i << ": current_joint_position_rounded: " << current_joint_position_rounded << std::endl;
+      std::cout << "Joint " << i << ": expected_joint_position_rounded: " << expected_joint_position_rounded << std::endl;
+      std::cout << "Joint " << i << ", deviation: " << deviation << std::endl;
+      flag = 1;
     }
+  }
+  if (flag)
+  {
+    return false;
   }
   return true;
 }
 
-bool addCollisionObjects()
+std::vector<moveit_msgs::CollisionObject> getCollisionObjects(std::string frame_id)
 {
   //add objects to scene
   moveit_msgs::CollisionObject collision_object;
-  collision_object.header.frame_id = move_group_interface.getPlanningFrame();
+  collision_object.header.frame_id = frame_id; //ove_group_interface.getPlanningFrame();
 
   collision_object.id = "table";
 
@@ -95,7 +123,7 @@ bool addCollisionObjects()
   std::vector<moveit_msgs::CollisionObject> collision_objects;
   collision_objects.push_back(collision_object);
 
-  planning_scene_interface.addCollisionObjects(collision_objects);
+  return collision_objects;
 
   //std::Vector3d b(0.001, 0.001, 0.001);
   // moveit_msgs::CollisionObject co;
@@ -133,7 +161,7 @@ bool addCollisionObjects()
 
 int main(int argc, char **argv)
 {
-  ros::init(argc, argv, "move_group_interface_tutorial");
+  ros::init(argc, argv, "flexible_assembly");
   ros::NodeHandle node_handle;
 
   // ROS spinning must be running for the MoveGroupInterface to get information
@@ -153,57 +181,53 @@ int main(int argc, char **argv)
   ROS_INFO_NAMED("Flexible_assembly", "Available Planning Groups:");
   std::copy(move_group_interface.getJointModelGroupNames().begin(),
             move_group_interface.getJointModelGroupNames().end(), std::ostream_iterator<std::string>(std::cout, ", "));
-
-
+  std::cout << std::endl << std::endl;
 
   /////////////////////////////////////////////////////////////////////////////////
   moveit::planning_interface::MoveGroupInterface::Plan my_plan;
   moveit::core::RobotStatePtr current_state = move_group_interface.getCurrentState();
+  //set moveit params
+  move_group_interface.setPlanningTime(5.0);
+  move_group_interface.setMaxVelocityScalingFactor(1.0);
+  move_group_interface.setMaxAccelerationScalingFactor(1.0);
 
-  //get the current set of joint values for the group.
-  std::vector<double> joint_group_positions;
-  current_state->copyJointGroupPositions(joint_model_group, joint_group_positions);
+  //planning_scene_interface.addCollisionObjects(getCollisionObjects(move_group_interface.getPlanningFrame()));
+  sleep(3);
 
-  std::cout << "joint_group_positions before:" << std::endl;
-  for (double i : joint_group_positions)
-    std::cout << i << std::endl;
+  //get current joint positions
+  std::vector<double> current_joint_positions;
+  current_state->copyJointGroupPositions(joint_model_group, current_joint_positions);
 
-  //Now, let's modify one of the joints, plan to the new joint space goal and visualize the plan.
-  joint_group_positions[0] = -1.3825; // -1/6 turn in radians
-  joint_group_positions[1] = -1.7265;
-  joint_group_positions[2] = -1.8083;
-  joint_group_positions[3] = -1.1071;
-  joint_group_positions[4] = 1.5708;
-  joint_group_positions[5] = 0.4221;
-
-  // std::vector<float> joint_poses{-1.3825,-1.7265,-1.8083,-1.1071,1.5708,0.4221};
-
-  joint_group_positions[0] = joint_group_positions[0] + 0.2;
-
-  std::cout << "joint_group_positions after:" << std::endl;
-  for (double i : joint_group_positions)
-    std::cout << i << std::endl;
-
-  move_group_interface.setJointValueTarget(joint_group_positions);
-
-  // We lower the allowed maximum velocity and acceleration to 5% of their maximum.
-  // The default values are 10% (0.1).
-  // Set your preferred defaults in the joint_limits.yaml file of your robot's moveit_config
-  // or set explicit factors in your code if you need your robot to move faster.
-  move_group_interface.setMaxVelocityScalingFactor(0.05);
-  move_group_interface.setMaxAccelerationScalingFactor(0.05);
-
-  bool success = (move_group_interface.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
-  if (success)
+  //check if robot is at expected homePose
+  if (!robotIsatPose(current_joint_positions, homePose))
   {
-    move_group_interface.execute(my_plan);
+    std::cout << "Robot is not at the expected pose 'homePose', please move the robot manually to the expected pose & restart." << std::endl;
+    ros::shutdown();
+  }
+
+  //set jointvalues to prePickPose
+  move_group_interface.setJointValueTarget(prePickPose);
+  if (!move_group_interface.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS)
+  {
+    std::cout << "planning unsuccesfull" << std::endl;
   }
   else
   {
-    std::cout << "unsuccesfull" << std::endl;
+    if(!move_group_interface.execute(my_plan)){
+      std::cout << " execute plan not finished";
+    }
   }
 
-  std::cout << "*********************************Done" << std::endl;
+  //set jointvalues to homePoise
+  move_group_interface.setJointValueTarget(homePose);
+  if (!move_group_interface.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS)
+  {
+    std::cout << "planning unsuccesfull" << std::endl;
+  }
+  else
+  {
+    move_group_interface.execute(my_plan);
+  }
 
   ros::shutdown();
   return 0;
