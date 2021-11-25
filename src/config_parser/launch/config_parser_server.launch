@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<launch>
+    <node name="config_parser_server" pkg="config_parser" type="config_parser_server" output="screen"/>
+</launch>
