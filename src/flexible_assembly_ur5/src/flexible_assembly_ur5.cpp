@@ -117,9 +117,9 @@ visualization_msgs::Marker getMarker(std::string frame_id, geometry_msgs::Pose m
   marker.pose = marker_pose;
 
   // Set the scale of the marker -- 1x1x1 here means 1m on a side
-  marker.scale.x = 0.01;
-  marker.scale.y = 0.01;
-  marker.scale.z = 0.01;
+  marker.scale.x = 0.02;
+  marker.scale.y = 0.02;
+  marker.scale.z = 0.02;
 
   // Set the color -- be sure to set alpha to something non-zero!
   marker.color.r = 1.0f;
@@ -173,9 +173,9 @@ std::vector<moveit_msgs::CollisionObject> getCollisionObjects(std::string frame_
   worldObj.mesh_poses.resize(1);
   worldObj.header.frame_id = frame_id;
   worldObj.id = "world";
-  worldObj.mesh_poses[0].position.x = -0.20;
-  worldObj.mesh_poses[0].position.y = -0.15;
-  worldObj.mesh_poses[0].position.z = -0.025;
+  worldObj.mesh_poses[0].position.x = -0.15;
+  worldObj.mesh_poses[0].position.y = -0.35;
+  worldObj.mesh_poses[0].position.z = -0.035;
   worldObj.mesh_poses[0].orientation.w = 0.0;
   worldObj.mesh_poses[0].orientation.x = 0.0;
   worldObj.mesh_poses[0].orientation.y = 0.0;
@@ -199,6 +199,9 @@ int main(int argc, char **argv)
 
   //pub sub
   ros::Publisher marker_pub = node_handle.advertise<visualization_msgs::Marker>("visualization_marker", 0);
+  ros::Publisher display_publisher = node_handle.advertise<moveit_msgs::DisplayTrajectory>("/move_group/display_planned_path", 1, true);
+  moveit_msgs::DisplayTrajectory display_trajectory;
+
 
   // ROS spinning must be running for the MoveGroupInterface to get information
   // about the robot's state. One way to do this is to start an AsyncSpinner
@@ -224,7 +227,7 @@ int main(int argc, char **argv)
   moveit::planning_interface::MoveGroupInterface::Plan my_plan;
   moveit::core::RobotStatePtr current_state = move_group_interface.getCurrentState();
   //set moveit params
-  move_group_interface.setPlannerId("OMPL");
+  move_group_interface.setPlannerId("RRTConnect");
   move_group_interface.allowReplanning(true);
   move_group_interface.setPlanningTime(5.0);
   move_group_interface.setNumPlanningAttempts(10);
@@ -262,7 +265,7 @@ int main(int argc, char **argv)
   }
 
   move_group_interface.setStartState(*move_group_interface.getCurrentState());
-  geometry_msgs::Pose target_pose1; 
+  geometry_msgs::Pose target_pose1;
   target_pose1.orientation.w = 1.0;
   target_pose1.position.x = 0.3;
   target_pose1.position.y = 0.3;
