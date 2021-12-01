@@ -25,7 +25,7 @@ $ catkin_make
 $ source devel/setup.bash
 ```
 
-**Follow the guide in the Universal Robots ROS driver repo:**
+**Follow the guide in the Universal Robots ROS driver repo:** <br /> 
 The Universal_Robots_ROS_Driver is included in this git repo, further info here:
 https://github.com/UniversalRobots/Universal_Robots_ROS_Driver <br /> 
 Use the calibration steps if this is the first use of your UR with ROS. 
