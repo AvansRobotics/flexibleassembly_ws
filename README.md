@@ -19,14 +19,10 @@ https://github.com/UniversalRobots/Universal_Robots_ROS_Driver <br />
 Use the calibration steps if this is the first use of your UR with ROS
 
 **Install this repository from Source:**
-
-First set up a catkin workspace (see [this tutorials](http://wiki.ros.org/catkin/Tutorials)).  
-Then clone the repository into the src/ folder. It should look like /path/to/your/catkin_workspace/src/FlexibleAssembly.  
-Make sure to source the correct setup file according to your workspace hierarchy, then use catkin_make to compile.  
-
-Assuming your catkin workspace folder is ~/catkin_ws, you should use the following commands:
+This repo is the complete workspace (flexibleassembly_ws) without the recursive sub-modules.
+Clone this repo into the folder where you want to initialize your ws, for examle:
 ```sh
-$ cd ~/catkin_ws/src
+$ cd ~/
 $ git clone https://github.com/AvansRobotics/flexibleassembly_ws.git
 $ cd ..
 $ catkin_make
