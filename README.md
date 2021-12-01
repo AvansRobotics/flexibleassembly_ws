@@ -14,10 +14,6 @@ The recommend operating environment is on Ubuntu 18.04 with ROS Melodic. So far 
 
 **Make sure your system is up to date and ros is installed**
 
-**Follow the guide in the Universal Robots ROS driver repo:**
-https://github.com/UniversalRobots/Universal_Robots_ROS_Driver <br /> 
-Use the calibration steps if this is the first use of your UR with ROS
-
 **Install this repository from Source:**
 This repo is the complete workspace (flexibleassembly_ws) without the recursive sub-modules.
 Clone this repo into the folder where you want to initialize your ws, for examle:
@@ -28,3 +24,8 @@ $ cd ..
 $ catkin_make
 $ source devel/setup.bash
 ```
+
+**Follow the guide in the Universal Robots ROS driver repo:**
+The Universal_Robots_ROS_Driver is included in this git repo, further info here:
+https://github.com/UniversalRobots/Universal_Robots_ROS_Driver <br /> 
+Use the calibration steps if this is the first use of your UR with ROS. 
