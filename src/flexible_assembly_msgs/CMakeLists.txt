@@ -1,5 +1,5 @@
-cmake_minimum_required(VERSION 3.0.2)
-project(config_parser)
+cmake_minimum_required(VERSION 2.8.3)
+project(flexible_assembly_msgs)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -8,14 +8,8 @@ project(config_parser)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  roscpp
-  std_msgs
-  flexible_assembly_msgs
-  message_generation
-  cmake_modules
+  std_msgs message_generation
 )
-
-find_package(TinyXML REQUIRED)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -24,7 +18,7 @@ find_package(TinyXML REQUIRED)
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
 ## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
-# catkin_python_setup()
+catkin_python_setup()
 
 ################################################
 ## Declare ROS messages, services and actions ##
@@ -53,18 +47,22 @@ find_package(TinyXML REQUIRED)
 ## Generate messages in the 'msg' folder
 # add_message_files(
 #   FILES
-#   # Num.msg
-#   # Component.msg
-#   # Assembly.msg
+#   Message1.msg
+#   Message2.msg
 # )
+add_message_files(
+  FILES
+  Config.msg
+  Assembly.msg
+  Component.msg
+)
 
 ## Generate services in the 'srv' folder
-add_service_files(
-  FILES
-  AddTwoInts.srv
-  AddTimestamp.srv
-  ParseConfig.srv
-)
+# add_service_files(
+#   FILES
+#   Service1.srv
+#   Service2.srv
+# )
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -74,10 +72,12 @@ add_service_files(
 # )
 
 ## Generate added messages and services with any dependencies listed here
+# generate_messages(
+#   DEPENDENCIES
+#   std_msgs  # Or other packages containing msgs
+# )
 generate_messages(
-  DEPENDENCIES
-  std_msgs
-  flexible_assembly_msgs
+  DEPENDENCIES std_msgs
 )
 
 ################################################
@@ -110,10 +110,10 @@ generate_messages(
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES config_parser
-  CATKIN_DEPENDS roscpp std_msgs message_runtime flexible_assembly_msgs
-  DEPENDS TinyXML
+   INCLUDE_DIRS include
+#  LIBRARIES yolact_ros
+   CATKIN_DEPENDS std_msgs message_runtime
+#  DEPENDS system_lib
 )
 
 ###########
@@ -124,13 +124,12 @@ catkin_package(
 ## Your package locations should be listed before other locations
 include_directories(
   include
-  ${catkin_INCLUDE_DIRS}
-  ${TinyXML_INCLUDE_DIRS}
+# ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/config_parser.cpp
+#   src/${PROJECT_NAME}/yolact_ros.cpp
 # )
 
 ## Add cmake target dependencies of the library
@@ -141,7 +140,7 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/config_parser_node.cpp)
+# add_executable(${PROJECT_NAME}_node src/yolact_ros_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -167,23 +166,16 @@ include_directories(
 
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
-# catkin_install_python(PROGRAMS
+# install(PROGRAMS
 #   scripts/my_python_script
 #   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 # )
 
-## Mark executables for installation
-## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
-# install(TARGETS ${PROJECT_NAME}_node
-#   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-# )
-
-## Mark libraries for installation
-## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_libraries.html
-# install(TARGETS ${PROJECT_NAME}
+## Mark executables and/or libraries for installation
+# install(TARGETS ${PROJECT_NAME} ${PROJECT_NAME}_node
 #   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-#   RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
+#   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 # )
 
 ## Mark cpp header files for installation
@@ -205,20 +197,10 @@ include_directories(
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_config_parser.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_yolact_ros.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
-
-#add_dependencies(config_parser_server ${catkin_EXPORTED_TARGETS})
-add_executable(config_parser_server src/config_parser_server.cpp)
-target_link_libraries(config_parser_server ${catkin_LIBRARIES} ${TinyXML_LIBRARIES})
-add_dependencies(config_parser_server config_parser_gencpp)
-
-#add_dependencies(config_parser_client ${catkin_EXPORTED_TARGETS})
-add_executable(config_parser_client src/config_parser_client.cpp)
-target_link_libraries(config_parser_client ${catkin_LIBRARIES})
-add_dependencies(config_parser_client config_parser_gencpp)

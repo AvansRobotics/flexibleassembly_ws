@@ -14,8 +14,9 @@ int main(int argc, char **argv)
   srv.request.filepath = "/home/washichi/flexibleassembly_ws/config.xml";
   if (client.call(srv))
   {
-    //ROS_INFO("Sum: %ld", (long int)srv.response.sum);
-    ;
+
+    std::cout << srv.response.config << std::endl;
+    //ROS_INFO("config: %ld", (long int)srv.response.sum);
   }
   else
   {
