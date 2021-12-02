@@ -134,60 +134,57 @@ visualization_msgs::Marker getMarker(std::string frame_id, geometry_msgs::Pose m
 std::vector<moveit_msgs::CollisionObject> getCollisionObjects(std::string frame_id)
 {
   std::vector<moveit_msgs::CollisionObject> collision_objects;
-  // //SHAPE OBJECT
-  // //add objects to scene
-  // moveit_msgs::CollisionObject collision_object;
-  // collision_object.header.frame_id = frame_id; //move_group_interface.getPlanningFrame();
-  // collision_object.id = "table";
+  //SHAPE OBJECT
+  //add objects to scene
+  moveit_msgs::CollisionObject collision_object;
+  collision_object.header.frame_id = frame_id; //move_group_interface.getPlanningFrame();
+  collision_object.id = "table";
 
-  // shape_msgs::SolidPrimitive primitive;
-  // primitive.type = primitive.BOX;
-  // primitive.dimensions.resize(3);
-  // primitive.dimensions[0] = 0.10;
-  // primitive.dimensions[1] = 0.10;
-  // primitive.dimensions[2] = 0.10;
+  shape_msgs::SolidPrimitive primitive;
+  primitive.type = primitive.BOX;
+  primitive.dimensions.resize(3);
+  primitive.dimensions[0] = 1.0;
+  primitive.dimensions[1] = 1.0;
+  primitive.dimensions[2] = 0.10;
 
-  // geometry_msgs::Pose box_pose;
-  // box_pose.orientation.w = 1.0;
-  // box_pose.position.x = 0.15;
-  // box_pose.position.y = 0.15;
-  // box_pose.position.z = 0.2;
+  geometry_msgs::Pose box_pose;
+  box_pose.orientation.w = 1.0;
+  box_pose.position.x = 0;
+  box_pose.position.y = 0;
+  box_pose.position.z = 0;
 
-  // collision_object.primitives.push_back(primitive);
-  // collision_object.primitive_poses.push_back(box_pose);
-  // collision_object.operation = collision_object.ADD;
+  collision_object.primitives.push_back(primitive);
+  collision_object.primitive_poses.push_back(box_pose);
+  collision_object.operation = collision_object.ADD;
 
-  // collision_objects.push_back(collision_object);
+  collision_objects.push_back(collision_object);
 
   //WORLD MESH OBJECT
 
-  moveit_msgs::CollisionObject worldObj;
-  shape_msgs::Mesh world_mesh;
-  shapes::ShapeMsg world_mesh_msg;
-  shapes::Mesh *m = shapes::createMeshFromResource("package://ur3_with_vacuum_tool_moveit_config/meshes/World.STL");
-  shapes::constructMsgFromShape(m, world_mesh_msg);
-  world_mesh = boost::get<shape_msgs::Mesh>(world_mesh_msg);
+  // moveit_msgs::CollisionObject worldObj;
+  // shape_msgs::Mesh world_mesh;
+  // shapes::ShapeMsg world_mesh_msg;
+  // shapes::Mesh *m = shapes::createMeshFromResource("package://ur3_with_vacuum_tool_moveit_config/meshes/World.STL");
+  // shapes::constructMsgFromShape(m, world_mesh_msg);
+  // world_mesh = boost::get<shape_msgs::Mesh>(world_mesh_msg);
 
-  worldObj.meshes.resize(1);
-  worldObj.meshes[0] = world_mesh;
-  worldObj.mesh_poses.resize(1);
-  worldObj.header.frame_id = frame_id;
-  worldObj.id = "world";
-  worldObj.mesh_poses[0].position.x = -0.15;
-  worldObj.mesh_poses[0].position.y = -0.35;
-  worldObj.mesh_poses[0].position.z = -0.035;
-  worldObj.mesh_poses[0].orientation.w = 0.0;
-  worldObj.mesh_poses[0].orientation.x = 0.0;
-  worldObj.mesh_poses[0].orientation.y = 0.0;
-  worldObj.mesh_poses[0].orientation.z = 0.0;
+  // worldObj.meshes.resize(1);
+  // worldObj.meshes[0] = world_mesh;
+  // worldObj.mesh_poses.resize(1);
+  // worldObj.header.frame_id = frame_id;
+  // worldObj.id = "world";
+  // worldObj.mesh_poses[0].position.x = -0.15;
+  // worldObj.mesh_poses[0].position.y = -0.35;
+  // worldObj.mesh_poses[0].position.z = -0.035;
+  // worldObj.mesh_poses[0].orientation.w = 0.0;
+  // worldObj.mesh_poses[0].orientation.x = 0.0;
+  // worldObj.mesh_poses[0].orientation.y = 0.0;
+  // worldObj.mesh_poses[0].orientation.z = 0.0;
 
-  worldObj.meshes.push_back(world_mesh);
-  worldObj.mesh_poses.push_back(worldObj.mesh_poses[0]);
-  worldObj.operation = worldObj.ADD;
-  // worldObj.meshes.push_back(mesh);
+  // worldObj.meshes.push_back(world_mesh);
   // worldObj.mesh_poses.push_back(worldObj.mesh_poses[0]);
   // worldObj.operation = worldObj.ADD;
-  collision_objects.push_back(worldObj);
+  // collision_objects.push_back(worldObj);
 
   return collision_objects;
 }
@@ -229,10 +226,11 @@ int main(int argc, char **argv)
   //set moveit params
   move_group_interface.setPlannerId("RRTConnect");
   move_group_interface.allowReplanning(true);
-  move_group_interface.setPlanningTime(5.0);
-  move_group_interface.setNumPlanningAttempts(10);
+  move_group_interface.setNumPlanningAttempts(50);
+  move_group_interface.setPlanningTime(50.0);
   move_group_interface.setMaxVelocityScalingFactor(1.0);
   move_group_interface.setMaxAccelerationScalingFactor(1.0);
+  
 
   //add collision objects to scene
   std::vector<moveit_msgs::CollisionObject> collision_objects = getCollisionObjects(move_group_interface.getPlanningFrame());
@@ -264,6 +262,7 @@ int main(int argc, char **argv)
     }
   }
 
+
   move_group_interface.setStartState(*move_group_interface.getCurrentState());
   geometry_msgs::Pose target_pose1;
   target_pose1.orientation.w = 1.0;
@@ -277,6 +276,7 @@ int main(int argc, char **argv)
   marker_pub.publish(marker);
   //
 
+  //bool success = (move_group_interface.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
   moveit::planning_interface::MoveItErrorCode ret = move_group_interface.plan(my_plan);
   std::cout << "ret: " << ret << std::endl;
   //int32 SUCCESS=1
