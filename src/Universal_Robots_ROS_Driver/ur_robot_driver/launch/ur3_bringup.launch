@@ -18,3 +18,7 @@
     <arg name="use_tool_communication" value="false"/>
   </include>
 </launch>
+
+<!-- ???????????
+  <arg name="kinematics_config" default="$(find ur_calibration)/ROS-UR-5_robot_calibration.yaml" doc="Kinematics config file used for calibration correction. This will be used to verify the robot's calibration is matching the robot_description."/>
+-->
