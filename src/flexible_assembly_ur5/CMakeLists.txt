@@ -11,6 +11,8 @@ find_package(catkin REQUIRED COMPONENTS
   moveit_ros_planning
   moveit_ros_planning_interface
   moveit_visual_tools
+  config_parser
+  geometry_msgs
   roscpp
   std_msgs
   tf2_eigen
@@ -108,7 +110,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
  INCLUDE_DIRS include
  LIBRARIES flexible_assembly_ur5
- CATKIN_DEPENDS moveit_ros_planning moveit_ros_planning_interface moveit_visual_tools roscpp std_msgs tf2_eigen
+ CATKIN_DEPENDS moveit_ros_planning moveit_ros_planning_interface moveit_visual_tools roscpp std_msgs tf2_eigen geometry_msgs
  DEPENDS system_lib
 )
 

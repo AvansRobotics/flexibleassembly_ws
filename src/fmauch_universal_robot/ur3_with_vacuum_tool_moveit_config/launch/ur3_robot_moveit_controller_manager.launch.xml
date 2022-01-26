@@ -1,0 +1,19 @@
+<!-- <launch>
+
+  loads moveit_controller_manager on the parameter server which is taken as argument
+    if no argument is passed, moveit_simple_controller_manager will be set
+  <arg name="moveit_controller_manager" default="moveit_simple_controller_manager/MoveItSimpleControllerManager" />
+  <param name="moveit_controller_manager" value="$(arg moveit_controller_manager)"/>
+
+  loads ros_controllers to the param server
+  <rosparam file="$(find ur3_with_vacuum_tool_moveit_config)/config/ros_controllers.yaml"/>
+</launch> -->
+
+
+<launch>
+  <rosparam file="$(find ur3_with_vacuum_tool_moveit_config)/config/ros_controllers.yaml"/>
+  <param name="use_controller_manager" value="false"/>
+  <arg name="execution_type" default="interpolate" />
+  <param name="trajectory_execution/execution_duration_monitoring" value="false"/>
+  <param name="moveit_controller_manager" value="moveit_simple_controller_manager/MoveItSimpleControllerManager"/>
+</launch>

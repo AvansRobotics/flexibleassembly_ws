@@ -1,0 +1,75 @@
+#!/usr/bin/env python
+# license removed for brevity
+import rospy
+from enum import IntEnum
+from std_msgs.msg import UInt8
+import sys
+import time
+
+# enum States
+# {
+
+# };
+
+
+
+class States(IntEnum):
+  IDLE = 0
+  INIT = 1
+  READ_CONFIG = 2
+  ASSEMBLE = 3
+  DEINIT = 4
+  SHUTDOWN = 5
+
+def callback(data):
+    rospy.loginfo(rospy.get_caller_id() + "I heard %s", data.data)
+
+def showMenu():
+    menu = {}
+    menu['1']="Initialize"
+    menu['2']="Read Config"
+    menu['3']="Assemble"
+    menu['4']="De-initialize"
+    menu['5']="Shutdown & Exit"
+    while True: 
+        options=menu.keys()
+        options.sort()
+        print('\n\n')
+
+        for entry in options: 
+            print(entry, menu[entry])
+        
+        selection = input("\n Please Select:")
+
+        if not int(selection):
+            print("Please give valid input.")
+        else:
+            if selection == 1: 
+                pub_state_request.publish(States.INIT.value)
+                print("requested INIT state")
+            elif selection == 2: 
+                pub_state_request.publish(States.READ_CONFIG.value)
+                print("requested READ_CONFIG state")
+            elif selection == 3:
+                pub_state_request.publish(States.ASSEMBLE.value)
+                print("requested ASSEMBLE state")
+            elif selection == 4:
+                pub_state_request.publish(States.DEINIT.value)
+                print("requested DEINIT state")
+            elif selection == 5:
+                pub_state_request.publish(States.SHUTDOWN.value)
+                print("requested SHUTDOWN state")
+                #rospy.is_shutdown()
+                #rospy.signal_shutdown("shutdown requested")
+            else: 
+                print("Unknown Option Selected!")
+
+if __name__ == '__main__':
+    pub_state_request = rospy.Publisher('/state_request', UInt8, queue_size=1)
+    #rospy.Subscriber("current_state", UInt8, callback)
+    rospy.init_node('flexible_assembly_ui', anonymous=True, disable_signals=True)
+    rate = rospy.Rate(10) # 10hz
+    
+    showMenu()
+
+

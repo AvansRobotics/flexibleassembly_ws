@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<launch>
+    <include file="$(find ur_robot_driver)/launch/ur3_bringup.launch"> 
+        <!-- <arg name="limited" value="true"/> -->
+        <arg name="robot_ip" value="192.168.66.2"/>
+        <!-- <arg name="kinematics_config" value="my_robot_calibration_ur5.yaml"/> -->
+    </include>
+
+    <include file="$(find ur3_moveit_config)/launch/ur3_moveit_planning_execution.launch">
+    <!-- <include file="$(find ur3_moveit_config)/launch/ur3_moveit_planning_execution.launch">  -->
+        <!-- <arg name="robot_ip" value="192.168.66.2"/>
+        <arg name="kinematics_config" value="$(find ur_calibration)/ROS-UR-5_robot_calibration.yaml"/> -->
+    </include>
+
+    <include file="$(find ur3_moveit_config)/launch/moveit_rviz.launch"> 
+    <!-- <include file="$(find ur3_moveit_config)/launch/moveit_rviz.launch">  -->
+        <!-- <arg name="rviz_config" value="$(find flexible_assembly_bringup)/config/flexible_assembly_UR5.rviz"/> -->
+        <!-- <arg name="kinematics_config" value="${HOME}/urtest_ws/my_robot_calibration_ur5.yaml"/> -->
+    </include>
+
+</launch>
+
+<!-- roslaunch ur_robot_driver ur3_bringup.launch limited:=true robot_ip:=192.168.66.2 kinematics_config:=${HOME}/urtest_ws/my_robot_calibration_ur5.yaml -->
+
+

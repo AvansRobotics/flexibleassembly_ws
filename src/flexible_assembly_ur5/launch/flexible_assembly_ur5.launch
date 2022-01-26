@@ -1,5 +1,11 @@
 <?xml version="1.0"?>
 <launch>
+    <group ns="UR5">
     <node name="flexible_assembly_ur5" pkg="flexible_assembly_ur5" type="flexible_assembly_ur5" output="screen"/>
+    <node name="config_parser_server" pkg="config_parser" type="config_parser_server"/>
+    <node name="rosserial_python" pkg="rosserial_python" type="serial_node.py" args="/dev/ttyUSB0"/>
+    </group>
 </launch>
 
+<!-- student@gerard-HP-Z230-SFF-Workstation:~/urtest_ws$             roslaunch ur3_moveit_config test.launch 
+student@gerard-HP-Z230-SFF-Workstation:~/flexibleassembly_ws$   roslaunch flexible_assembly_ur5 flexible_assembly_ur5.launch  -->

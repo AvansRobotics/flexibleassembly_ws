@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- start the calculate object pose server -->
+  <node name="calculate_object_pose_client" pkg="pcl_processor" type="calculate_object_pose_client" output="screen"/>
+
+</launch>

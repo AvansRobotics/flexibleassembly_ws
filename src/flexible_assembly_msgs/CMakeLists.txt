@@ -8,7 +8,7 @@ project(flexible_assembly_msgs)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  std_msgs message_generation
+  std_msgs message_generation geometry_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -55,6 +55,8 @@ add_message_files(
   Config.msg
   Assembly.msg
   Component.msg
+  Cord.msg
+  Cords.msg
 )
 
 ## Generate services in the 'srv' folder
@@ -77,7 +79,7 @@ add_message_files(
 #   std_msgs  # Or other packages containing msgs
 # )
 generate_messages(
-  DEPENDENCIES std_msgs
+  DEPENDENCIES std_msgs geometry_msgs
 )
 
 ################################################
@@ -112,7 +114,7 @@ generate_messages(
 catkin_package(
    INCLUDE_DIRS include
 #  LIBRARIES yolact_ros
-   CATKIN_DEPENDS std_msgs message_runtime
+   CATKIN_DEPENDS std_msgs message_runtime geometry_msgs
 #  DEPENDS system_lib
 )
 

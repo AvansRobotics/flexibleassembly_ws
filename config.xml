@@ -5,6 +5,11 @@
     <base>arduino</base>
     <color>blue</color>
     <component>
+        <id>eaa54253-4661-41ff-b8c4-facef3d7362c</id>
+        <shape>circle</shape>
+        <color>red</color>
+    </component>
+    <component>
         <id>fdeed901-6b0d-40cf-87f6-3c670a046eaa</id>
         <shape>circle</shape>
         <color>red</color>
@@ -12,11 +17,6 @@
     <component>
         <id>21855317-6b1b-4bad-89d2-dc308558b026</id>
         <shape>square</shape>
-        <color>green</color>
-    </component>
-    <component>
-        <id>eaa54253-4661-41ff-b8c4-facef3d7362c</id>
-        <shape>rectangle</shape>
         <color>red</color>
     </component>
 </assembly>

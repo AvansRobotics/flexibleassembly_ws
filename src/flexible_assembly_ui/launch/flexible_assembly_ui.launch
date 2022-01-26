@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<launch>
+    <node name="flexible_assembly_ui" pkg="flexible_assembly_ui" type="flexible_assembly_ui.py" output="screen"/>
+</launch>

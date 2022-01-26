@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!-- Open_Manipulator Chain -->
+<robot name="realseanse" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- World -->
+  <link name="world"/>
+
+  <xacro:include filename="$(find realsense2_description)/urdf/_d435.urdf.xacro" />
+
+  <!-- Realsense Camera Joint Position -->
+  <xacro:sensor_d435 parent="world" use_nominal_extrinsics="true">
+    <origin xyz="0.0 0.00 0.5" rpy="0 1.57 0"/>
+  </xacro:sensor_d435>
+
+</robot>
